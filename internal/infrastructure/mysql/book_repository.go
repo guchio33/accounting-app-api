@@ -1,0 +1,43 @@
+package infrastructure
+
+import (
+	domain "accounting-app-api/internal/domain/book"
+	"fmt"
+	"log"
+
+	"github.com/jmoiron/sqlx"
+)
+
+// BookRepositoryはBookデータをMySQLから操作するリポジトリ
+type BookRepository struct {
+	DB *sqlx.DB
+}
+
+// 新しいBookRepositoryのインスタンスを作成します
+func NewBookRepository(db *sqlx.DB) *BookRepository {
+	return &BookRepository{DB: db}
+}
+
+func (r *BookRepository) GetAllBooks() ([]domain.Book, error) {
+	var books []domain.Book
+	query := "SELECT * from books"
+	err := r.DB.Select(&books, query)
+	log.Print(query, &books)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get books: %w", err)
+	}
+
+	return books, nil
+}
+
+func (r *BookRepository) AddBook(book *domain.Book) error {
+	query := "INSERT INTO  books (title, author, created_at, updated_at) VALUES(?,?,?,?)"
+	_,err := r.DB.Exec(query, book.Title, book.Author, book.CreatedAt, book.UpdatedAt)
+
+	if err != nil {
+		return fmt.Errorf("failed to add book: %w", err)
+	}
+
+	return nil
+}
