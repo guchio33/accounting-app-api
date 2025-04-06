@@ -30,3 +30,14 @@ func (r *BookRepository) GetAllBooks() ([]domain.Book, error) {
 
 	return books, nil
 }
+
+func (r *BookRepository) AddBook(book *domain.Book) error {
+	query := "INSERT INTO  books (title, author, created_at, updated_at) VALUES(?,?,?,?)"
+	_,err := r.DB.Exec(query, book.Title, book.Author, book.CreatedAt, book.UpdatedAt)
+
+	if err != nil {
+		return fmt.Errorf("failed to add book: %w", err)
+	}
+
+	return nil
+}
