@@ -7,11 +7,16 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
-# 必要なツールをインストール
+# 必要なツールをインストール (開発時のみ)
 RUN go install -tags mysql github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 RUN go install github.com/air-verse/air@latest
 
 # ソースコードをコピー
 COPY . .
 
-CMD ["go", "run", "./cmd/server/main.go"]
+# アプリケーションをビルド
+RUN go build -o /app/tmp/main ./cmd/server/main.go
+
+EXPOSE 8080
+
+CMD ["air", "-c", ".air.toml"]

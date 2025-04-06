@@ -23,7 +23,7 @@ func (r *BookRepository) GetAllBooks() ([]domain.Book, error) {
 	query := "SELECT * from books"
 	err := r.DB.Select(&books, query)
 	log.Print("bookの返却値: %+v",books)
-	log.Print("fagggaga")
+	log.Print("aa")
 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get books: %w", err)
