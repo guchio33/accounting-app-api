@@ -28,6 +28,7 @@ func main() {
 
 	// MySQL接続文字列を環境変数から取得
 	dsn := fmt.Sprintf("%s:%s@tcp(go-mysql:3306)/%s", dbUser, dbPassword, dbName)
+	fmt.Println(dsn)
 
 
 	// MySQLデータベースに接続

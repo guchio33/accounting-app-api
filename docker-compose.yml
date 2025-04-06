@@ -33,6 +33,8 @@ services:
       - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
     networks:
       - go-network
+    ports:
+      - "3306:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
