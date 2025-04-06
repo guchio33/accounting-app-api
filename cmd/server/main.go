@@ -27,7 +27,7 @@ func main() {
 	dbName := os.Getenv("MYSQL_DATABASE")
 
 	// MySQL接続文字列を環境変数から取得
-	dsn := fmt.Sprintf("%s:%s@tcp(go-mysql:3306)/%s", dbUser, dbPassword, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(go-mysql:3306)/%s?parseTime=true", dbUser, dbPassword, dbName)
 	fmt.Println(dsn)
 
 
