@@ -42,7 +42,8 @@ func main() {
 	bookHandler := handler.NewBookHandler(bookService)
 
 	http.HandleFunc("/books", bookHandler.GetAllBooks)
-	http.HandleFunc("/add-book", bookHandler.AddBook)
+	http.HandleFunc("/books/add", bookHandler.AddBook)
+	http.HandleFunc("/books/delete/{id}", bookHandler.DeleteBook)
 
 	// サーバー起動
 	log.Println("Server is running on port 8080")

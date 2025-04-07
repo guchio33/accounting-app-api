@@ -6,4 +6,7 @@ type BookRepository interface {
 
 	// 本を追加する
 	AddBook(book *Book) error
+
+	//本を削除
+	DeleteBook(bookId int) error
 }

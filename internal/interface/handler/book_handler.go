@@ -3,8 +3,8 @@ package handler
 import (
 	application "accounting-app-api/internal/application/book"
 	"encoding/json"
-	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type BookHandler struct {
@@ -45,8 +45,6 @@ func (h *BookHandler) AddBook(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	fmt.Println(book)
-
 	if err := h.Service.AddBook(book.Title, book.Author); err != nil {
 		http.Error(w, "Failed to add book", http.StatusInternalServerError)
 		return
@@ -54,4 +52,28 @@ func (h *BookHandler) AddBook(w http.ResponseWriter, r *http.Request){
 	
 	//ステータスコードを記述
 	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *BookHandler) DeleteBook(w http.ResponseWriter, r *http.Request) {
+	// URLからid取得
+	id := r.PathValue("id")
+
+	// idが存在しなかった場合、数字ではなかった場合
+	intBookId, parseErr := strconv.Atoi(id)
+	
+	if parseErr != nil {
+		http.Error(w, "ID must be a number or ID is missing ", http.StatusBadRequest)
+    return
+	}
+
+	if err := h.Service.DeleteBook(intBookId); err != nil {
+		http.Error(w, "Failed to delete book", http.StatusInternalServerError)
+		return
+	}
+
+	println("削除しました")
+
+	//ステータスコードを記述
+	w.WriteHeader(http.StatusCreated)
+
 }

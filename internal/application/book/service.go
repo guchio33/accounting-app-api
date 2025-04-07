@@ -30,3 +30,7 @@ func (s *BookService) AddBook(title string, author string) error {
 
 	return s.Repo.AddBook(book)
 }
+
+func (s *BookService) DeleteBook(bookId int) error {
+	return s.Repo.DeleteBook(bookId)
+}

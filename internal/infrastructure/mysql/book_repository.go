@@ -32,11 +32,22 @@ func (r *BookRepository) GetAllBooks() ([]domain.Book, error) {
 }
 
 func (r *BookRepository) AddBook(book *domain.Book) error {
-	query := "INSERT INTO  books (title, author, created_at, updated_at) VALUES(?,?,?,?)"
+	query := "INSERT INTO books (title, author, created_at, updated_at) VALUES(?,?,?,?)"
 	_,err := r.DB.Exec(query, book.Title, book.Author, book.CreatedAt, book.UpdatedAt)
 
 	if err != nil {
 		return fmt.Errorf("failed to add book: %w", err)
+	}
+
+	return nil
+}
+
+func (r *BookRepository) DeleteBook(bookId int) error {
+	query := "DELETE FROM books WHERE id =?"
+	_,err := r.DB.Exec(query, bookId)
+
+	if err != nil {
+		return fmt.Errorf("failed to delete book: %w", err)
 	}
 
 	return nil
