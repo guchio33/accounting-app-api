@@ -3,6 +3,7 @@ package application
 import (
 	domain "accounting-app-api/internal/domain/book"
 	infrastructure "accounting-app-api/internal/infrastructure/mysql"
+	"fmt"
 	"time"
 )
 
@@ -37,4 +38,21 @@ func (s *BookService) AddBook(title string, author string) error {
 
 func (s *BookService) DeleteBook(bookId int) error {
 	return s.Repo.DeleteBook(bookId)
+}
+
+func (s *BookService) UpdateBook(id int, title *string, authour *string) (error) {
+	// idから情報を取得
+	book, err := s.Repo.GetBook(id)
+	if err != nil {
+		return fmt.Errorf("failed to get book: %w", err)
+	}
+
+	if title != nil {
+		book.Title = *title 
+	}
+	if authour != nil {
+		book.Author = *authour
+	}
+
+	return s.Repo.UpdateBook(book, id)
 }

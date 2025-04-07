@@ -13,5 +13,6 @@ type BookRepository interface {
 	//本を削除
 	DeleteBook(bookId int) error
 
-
+	//本を更新
+	Update(book *Book, bookId int) error
 }

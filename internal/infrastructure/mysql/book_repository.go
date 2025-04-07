@@ -65,3 +65,14 @@ func (r *BookRepository) DeleteBook(bookId int) error {
 
 	return nil
 }
+
+func (r *BookRepository) UpdateBook(book *domain.Book, bookId int) error {
+	query := "Update books SET title=?, author=? WHERE id =?"
+	_,err := r.DB.Exec(query, book.Title, book.Author, bookId)
+
+	if err != nil {
+		return fmt.Errorf("failed to update book: %w", err)
+	}
+
+	return nil
+}
