@@ -31,6 +31,19 @@ func (r *BookRepository) GetAllBooks() ([]domain.Book, error) {
 	return books, nil
 }
 
+func (r *BookRepository) GetBook(bookId int) (*domain.Book, error) {
+	var book domain.Book
+
+	query := "SELECT * from books WHERE id = ? "
+	err := r.DB.Get(&book, query, bookId)
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to get books: %w", err)
+	}
+
+	return &book, nil
+}
+
 func (r *BookRepository) AddBook(book *domain.Book) error {
 	query := "INSERT INTO books (title, author, created_at, updated_at) VALUES(?,?,?,?)"
 	_,err := r.DB.Exec(query, book.Title, book.Author, book.CreatedAt, book.UpdatedAt)

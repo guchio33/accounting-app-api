@@ -20,6 +20,10 @@ func (s *BookService) GetAllBooks() ([]domain.Book, error) {
 	return s.Repo.GetAllBooks()
 }
 
+func (s *BookService) GetBook(bookId int) (*domain.Book, error) {
+	return s.Repo.GetBook(bookId)
+}
+
 func (s *BookService) AddBook(title string, author string) error {
 	book := &domain.Book{
 		Title:     title,

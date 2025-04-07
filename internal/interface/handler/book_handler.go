@@ -30,6 +30,34 @@ func (h *BookHandler) GetAllBooks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *BookHandler) GetBook(w http.ResponseWriter, r *http.Request) {
+	// URLからid取得
+	id := r.PathValue("id")
+
+	// idが存在しなかった場合、数字ではなかった場合
+	intBookId, parseErr := strconv.Atoi(id)
+	
+	if parseErr != nil {
+		http.Error(w, "ID must be a number or ID is missing ", http.StatusBadRequest)
+    return
+	}
+
+	book, err := h.Service.GetBook(intBookId); 
+	
+	if err != nil {
+		http.Error(w, "Failed to delete book", http.StatusInternalServerError)
+		return
+	}
+
+	// ステータスコード200 OKを設定
+	w.WriteHeader(http.StatusOK)
+
+	// 書籍情報をJSONとしてレスポンスに返す
+	json.NewEncoder(w).Encode(book)
+}
+
+
+
 // HTTPリクエストを受け付けて書籍を追加する処理
 func (h *BookHandler) AddBook(w http.ResponseWriter, r *http.Request){
 	//　書籍を定義
@@ -75,5 +103,4 @@ func (h *BookHandler) DeleteBook(w http.ResponseWriter, r *http.Request) {
 
 	//ステータスコードを記述
 	w.WriteHeader(http.StatusCreated)
-
 }
